@@ -16,6 +16,23 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    if(parsedContacts) {
+      this.setState({contacts: parsedContacts});
+    }
+    
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('prevState.contacts :>> ', prevState.contacts);
+    console.log('this.state.contacts :>> ', this.state.contacts);
+    if(this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   getFormData = data => {
     console.log('data :>> ', data);
     const dataIncludes = this.state.contacts.find(
@@ -28,9 +45,11 @@ class App extends Component {
       ...data,
       id: nanoid(),
     };
+    
     this.setState(prevState => ({
-      contacts: [newData, ...prevState.contacts],
+      contacts: [...prevState.contacts, newData],
     }));
+    
   };
 
   handleFilterChange = e => {

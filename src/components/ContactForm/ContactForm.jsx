@@ -13,6 +13,8 @@ class ContactForm extends Component {
     number: '',
   };
 
+
+
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
